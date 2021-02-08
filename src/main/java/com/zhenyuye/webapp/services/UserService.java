@@ -28,16 +28,16 @@ public class UserService {
 
     @Transactional
     public User createUser(UserRegisterDTO registerDTO) {
-        boolean hasUser = userRepository.existsByEmail(registerDTO.getEmail());
+        boolean hasUser = userRepository.existsByEmail(registerDTO.getUsername());
         if (hasUser) {
             throw new ValidationException("This email has been registered.");
         }
         User user = User.builder()
-                .email(registerDTO.getEmail())
+                .email(registerDTO.getUsername())
                 .password(bCryptPasswordEncoder.encode(registerDTO.getPassword()))
                 .firstName(registerDTO.getFirstName())
                 .lastName(registerDTO.getLastName())
-                .username(registerDTO.getEmail())
+                .username(registerDTO.getUsername())
                 .build();
         user = userRepository.save(user);
         return user;

@@ -45,9 +45,7 @@ public class UserController {
         ValidationUtil.verifyInput(result);
         if (!auth.isEmpty()) {
             User user= userService.updateUser(auth, userUpdateDTO);
-            UserData userData = buildUserData(user);
-
-            return new ResponseEntity<>(userData, HttpStatus.OK);
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
