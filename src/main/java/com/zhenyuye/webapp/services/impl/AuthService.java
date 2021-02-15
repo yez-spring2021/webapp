@@ -1,9 +1,9 @@
-package com.zhenyuye.webapp.services;
+package com.zhenyuye.webapp.services.impl;
 
 import com.zhenyuye.webapp.exceptions.UnAuthorizedException;
 import com.zhenyuye.webapp.model.User;
 import com.zhenyuye.webapp.repositories.UserRepository;
-import com.zhenyuye.webapp.userDto.UserCredential;
+import com.zhenyuye.webapp.dtos.userDto.UserCredential;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

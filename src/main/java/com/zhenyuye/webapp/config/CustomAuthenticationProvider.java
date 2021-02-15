@@ -1,7 +1,7 @@
 package com.zhenyuye.webapp.config;
 
 import com.zhenyuye.webapp.model.User;
-import com.zhenyuye.webapp.services.AuthService;
+import com.zhenyuye.webapp.services.impl.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

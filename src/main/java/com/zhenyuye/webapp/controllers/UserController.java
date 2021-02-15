@@ -1,10 +1,10 @@
 package com.zhenyuye.webapp.controllers;
 
 import com.zhenyuye.webapp.model.User;
-import com.zhenyuye.webapp.services.UserService;
-import com.zhenyuye.webapp.userDto.UserData;
-import com.zhenyuye.webapp.userDto.UserRegisterDTO;
-import com.zhenyuye.webapp.userDto.UserUpdateDTO;
+import com.zhenyuye.webapp.services.impl.UserService;
+import com.zhenyuye.webapp.dtos.userDto.UserData;
+import com.zhenyuye.webapp.dtos.userDto.UserRegisterDTO;
+import com.zhenyuye.webapp.dtos.userDto.UserUpdateDTO;
 import com.zhenyuye.webapp.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
