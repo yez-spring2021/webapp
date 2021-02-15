@@ -1,4 +1,4 @@
-package com.zhenyuye.webapp.userDto;
+package com.zhenyuye.webapp.dtos.userDto;
 
 import lombok.Builder;
 import lombok.Data;
