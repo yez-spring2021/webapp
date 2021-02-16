@@ -35,7 +35,7 @@ public class Book {
 
     @Column(name = "published_date", nullable = false)
     private String publishedDate;
-    @Column(name = "isbn", nullable = false)
+    @Column(name = "isbn", nullable = false, unique = true)
     private String isbn;
     @Column(name = "book_created", updatable = false, nullable = false)
     @CreationTimestamp

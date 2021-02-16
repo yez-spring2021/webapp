@@ -11,4 +11,6 @@ public interface BookService {
     BookData getBook(UUID bookId);
     void removeBook(UUID bookId, String auth);
     List<BookData> getBooks();
+
+    boolean isbnCheck(String isbn);
 }

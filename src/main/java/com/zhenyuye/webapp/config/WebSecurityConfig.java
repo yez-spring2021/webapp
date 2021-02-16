@@ -25,10 +25,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/books").permitAll()
+                .antMatchers(HttpMethod.GET, "/books/**").permitAll()
                 .antMatchers("/v1/user").permitAll()
                 .antMatchers("/v1/user/self").authenticated()
                 .antMatchers(HttpMethod.POST, "/books").authenticated()
-                .antMatchers("/books/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/books/**").authenticated()
                 .and().httpBasic().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
