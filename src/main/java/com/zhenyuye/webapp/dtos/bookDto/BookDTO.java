@@ -1,6 +1,7 @@
 package com.zhenyuye.webapp.dtos.bookDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.zhenyuye.webapp.annotation.UniqueISBN;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ public class BookDTO {
     @NotNull(message = "author is required")
     private String author;
     @NotNull(message = "isbn is required")
+    @UniqueISBN
     private String isbn;
     @NotNull(message = "published_date is required")
     @JsonProperty("published_date")

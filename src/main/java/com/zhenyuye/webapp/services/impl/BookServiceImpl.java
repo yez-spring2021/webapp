@@ -69,7 +69,7 @@ public class BookServiceImpl implements BookService {
             throw new ValidationException("Cannot validate current user");
         }
         if (!book.getUserId().equals(user.getId().toString())) {
-            throw new ValidationException("", HttpStatus.UNAUTHORIZED);
+            throw new ValidationException("User don't have access to remove.", HttpStatus.UNAUTHORIZED);
         }
         bookRepository.delete(book);
     }
@@ -78,6 +78,11 @@ public class BookServiceImpl implements BookService {
     public List<BookData> getBooks() {
         List<Book> books = bookRepository.findAll();
         return books.stream().map(this::generateBookData).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isbnCheck(String isbn) {
+        return bookRepository.existsBookByIsbn(isbn);
     }
 
     private BookData generateBookData(Book book) {

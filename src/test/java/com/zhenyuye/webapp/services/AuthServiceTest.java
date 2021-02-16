@@ -13,7 +13,6 @@ import org.mockito.Mockito;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import static org.mockito.Mockito.*;
