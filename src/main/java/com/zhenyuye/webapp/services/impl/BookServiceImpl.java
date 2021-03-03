@@ -2,11 +2,13 @@ package com.zhenyuye.webapp.services.impl;
 
 import com.zhenyuye.webapp.dtos.bookDto.BookDTO;
 import com.zhenyuye.webapp.dtos.bookDto.BookData;
+import com.zhenyuye.webapp.dtos.bookDto.FileData;
 import com.zhenyuye.webapp.exceptions.ValidationException;
 import com.zhenyuye.webapp.model.Book;
 import com.zhenyuye.webapp.model.User;
 import com.zhenyuye.webapp.repositories.BookRepository;
 import com.zhenyuye.webapp.services.BookService;
+import com.zhenyuye.webapp.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private FileService fileService;
     @Override
     public BookData createBook(BookDTO bookDTO, String auth) {
         User user = userService.getUser(auth);
@@ -86,6 +90,7 @@ public class BookServiceImpl implements BookService {
     }
 
     private BookData generateBookData(Book book) {
+        List<FileData> fileDataList = fileService.getImages(book.getId().toString());
         return BookData.builder()
                 .id(book.getId())
                 .author(book.getAuthor())
@@ -94,6 +99,7 @@ public class BookServiceImpl implements BookService {
                 .title(book.getTitle())
                 .userId(book.getUserId())
                 .bookCreated(book.getBookCreated())
+                .bookImages(fileDataList)
                 .build();
     }
 }
