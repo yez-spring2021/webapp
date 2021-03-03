@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -20,4 +21,6 @@ public class BookData {
     private String userId;
     @JsonProperty("book_created")
     private Date bookCreated;
+    @JsonProperty("book_images")
+    private List<FileData> bookImages;
 }
