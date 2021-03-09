@@ -1,6 +1,7 @@
 package com.zhenyuye.webapp.spring;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
@@ -18,7 +19,7 @@ public class AWSFactory {
     public AmazonS3 getAmazonS3() {
         AWSCredentialsProvider provider;
         if(realm.equals("desktop")) {
-            provider = new ProfileCredentialsProvider("dev");
+            provider = new EnvironmentVariableCredentialsProvider();
         }else {
             provider = InstanceProfileCredentialsProvider.getInstance();
         }
