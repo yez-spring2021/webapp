@@ -4,26 +4,24 @@ import com.zhenyuye.webapp.dtos.userDto.UserCredential;
 import com.zhenyuye.webapp.model.User;
 import com.zhenyuye.webapp.repositories.UserRepository;
 import com.zhenyuye.webapp.services.impl.AuthService;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Base64;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
 public class AuthServiceTest {
     private static final String TEST_USERNAME = "test@test.com";
     private static final String TEST_PASSWORD = "passwordTest-1";
     private static final String TEST_FIRSTNAME = "test";
     private static final String TEST_LASTNAME = "test";
-    private static final String AUTH = "Basic test@test.com:passwordTest-1";
     private static final User USER = User.builder().username(TEST_USERNAME).password(TEST_PASSWORD).firstName(TEST_FIRSTNAME).lastName(TEST_LASTNAME).build();
     @Mock
     private UserRepository userRepository;

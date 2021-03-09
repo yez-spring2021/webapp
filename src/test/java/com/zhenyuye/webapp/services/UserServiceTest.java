@@ -7,18 +7,16 @@ import com.zhenyuye.webapp.model.User;
 import com.zhenyuye.webapp.repositories.UserRepository;
 import com.zhenyuye.webapp.services.impl.AuthService;
 import com.zhenyuye.webapp.services.impl.UserService;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.Mockito.when;
-
-@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
 public class UserServiceTest {
     private static final String TEST_USERNAME = "test@test.com";
     private static final String TEST_PASSWORD = "passwordTest-1";
