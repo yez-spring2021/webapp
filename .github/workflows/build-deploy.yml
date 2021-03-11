@@ -1,0 +1,35 @@
+
+name: Build and Deploy Application
+
+env:
+  ARTIFACT_NAME: webapp-${{ github.run_number }}.zip
+  CODEDEPLOY_APPLICATION_NAME: ${{ secrets.CODEDEPLOY_APPLICATION_NAME }}
+  CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME: ${{ secrets.CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME }}
+  AWS_REGION: us-east-1
+
+on:
+  workflow_dispatch:
+jobs:
+  code_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0.4
+      - name: Build with Maven
+        run: mvn package --file pom.xml
+      - name: Build Deployment Artifact
+        run: |
+          echo "Build Deployment Artifact ${{ github.run_number }}"
+          pwd
+          ls -al
+          mkdir -p codedeploy_artifact
+          zip -r ${{ env.ARTIFACT_NAME }} ./
+          mv ${{ env.ARTIFACT_NAME}} codedeploy_artifact/
+          cd codedeploy_artifact
+          pwd
+          ls -al
+          cd ..
+
