@@ -8,6 +8,12 @@ env:
   AWS_REGION: us-east-1
 
 on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 jobs:
   code_deploy:
@@ -20,6 +26,14 @@ jobs:
           java-version: 11.0.4
       - name: Build with Maven
         run: mvn package --file pom.xml
+        env:
+          MYSQL_HOSTNAME: ${{ secrets.MYSQL_HOSTNAME }}
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          S3_BUCKET_NAME: webapptest.zhenyu.ye
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          REALM: desktop
       - name: Build Deployment Artifact
         run: |
           echo "Build Deployment Artifact ${{ github.run_number }}"
