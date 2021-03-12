@@ -1,0 +1,16 @@
+version: 0.0
+os: linux
+
+files:
+  - source: ./webapp/target/webapp-0.0.1-SNAPSHOT.war
+    destination: /opt/tomcat/webapps
+
+hooks:
+  BeforeInstall:
+    - location: scripts/beforeInstall.sh
+      timeout: 180
+      runas: ubuntu
+  AfterInstall:
+    - location: scripts/afterInstall.sh
+      timeout: 180
+      runas: ubuntu
