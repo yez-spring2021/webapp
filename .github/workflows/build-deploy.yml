@@ -6,16 +6,28 @@ env:
   CODEDEPLOY_APPLICATION_NAME: ${{ secrets.CODEDEPLOY_APPLICATION_NAME }}
   CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME: ${{ secrets.CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME }}
   AWS_REGION: us-east-1
+  MYSQL_HOSTNAME: ${{ secrets.MYSQL_HOSTNAME }}
+  MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+  MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+  S3_BUCKET_NAME: webapptest.zhenyu.ye
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  CODE_DEPLOY_BUCKET_NAME: ${{ secrets.CODE_DEPLOY_BUCKET_NAME }}
+  REALM: desktop
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push, pull_request]
   workflow_dispatch:
 jobs:
+  pr_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0.4
+      - name: Build with Maven
+        run: mvn -B test
   code_deploy:
     runs-on: ubuntu-latest
     steps:
@@ -26,24 +38,36 @@ jobs:
           java-version: 11.0.4
       - name: Build with Maven
         run: mvn package --file pom.xml
-        env:
-          MYSQL_HOSTNAME: ${{ secrets.MYSQL_HOSTNAME }}
-          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          S3_BUCKET_NAME: webapptest.zhenyu.ye
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          REALM: desktop
       - name: Build Deployment Artifact
         run: |
           echo "Build Deployment Artifact ${{ github.run_number }}"
           pwd
           ls -al
           mkdir -p codedeploy_artifact
-          zip -r ${{ env.ARTIFACT_NAME }} ./
+          zip -r ${{ env.ARTIFACT_NAME }} ./target/*.war *.yml scripts/*.sh
           mv ${{ env.ARTIFACT_NAME}} codedeploy_artifact/
           cd codedeploy_artifact
           pwd
           ls -al
           cd ..
+          ls -al
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Copy Artifact to S3
+        run:
+          aws s3 sync ./codedeploy_artifact s3://${{ secrets.CODE_DEPLOY_BUCKET_NAME}}
+      - name: CodeDeploy API Call
+        run: |
+          echo "CodeDeploy"
+          deploymentId=$(aws deploy create-deployment --region ${env.AWS_REGION} \
+          --application-name ${{env.CODEDEPLOY_APPLICATION_NAME}} \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name ${{env.CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME}} \
+          --s3-location bucket=${{ env.CODE_DEPLOY_BUCKET_NAME }},bundleType=zip,key=${{ env.ARTIFACT_NAME }} \
+          --auto-rollback-configuration enabled=true,events=DEPLOYMENT_FAILURE,DEPLOYMENT_STOP_ON_ALARM,DEPLOYMENT_STOP_ON_REQUEST)
+          echo "$deploymentId"
 
