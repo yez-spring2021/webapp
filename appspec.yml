@@ -3,7 +3,7 @@ os: linux
 
 files:
   - source: ./target/webapp-0.0.1-SNAPSHOT.war
-    destination: /opt/tomcat/webapps
+    destination: /opt/tomcat/latest/webapps
 
 hooks:
   BeforeInstall:
