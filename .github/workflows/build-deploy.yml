@@ -15,7 +15,13 @@ env:
   CODE_DEPLOY_BUCKET_NAME: ${{ secrets.CODE_DEPLOY_BUCKET_NAME }}
   REALM: desktop
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 jobs:
   pr_check:
