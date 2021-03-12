@@ -69,7 +69,7 @@ jobs:
       - name: CodeDeploy API Call
         run: |
           echo "CodeDeploy"
-          deploymentId=$(aws deploy create-deployment --region ${env.AWS_REGION} \
+          deploymentId=$(aws deploy create-deployment --region ${{env.AWS_REGION}} \
           --application-name ${{env.CODEDEPLOY_APPLICATION_NAME}} \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name ${{env.CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME}} \
