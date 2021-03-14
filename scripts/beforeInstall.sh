@@ -4,4 +4,4 @@
 sudo systemctl stop tomcat.service
 
 #removing previous build ROOT folder
-sudo rm -rf /opt/tomcat/latest/webapps/webapp-*.war
+sudo rm -rf /opt/tomcat/latest/webapps/ROOT
