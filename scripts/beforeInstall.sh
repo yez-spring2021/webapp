@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Stoping tomcat
+# Stopping tomcat
 sudo systemctl stop tomcat
 
 #removing previous build ROOT folder

@@ -1,4 +1,4 @@
 #!/bin/bash
 
-#stoping tomcat
+#stopping tomcat
 sudo systemctl stop tomcat
