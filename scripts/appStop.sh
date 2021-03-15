@@ -1,4 +1,4 @@
 #!/bin/bash
 
 #stoping tomcat
-sudo systemctl stop amazon-cloudwatch-agent.service
+sudo systemctl stop tomcat.service
