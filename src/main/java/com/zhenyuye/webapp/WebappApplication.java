@@ -12,12 +12,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class WebappApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        System.out.println(System.getenv());
         SpringApplication.run(WebappApplication.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        System.out.println(System.getenv());
         return builder.sources(WebappApplication.class);
     }
 }
