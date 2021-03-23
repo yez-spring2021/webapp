@@ -50,12 +50,12 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.PROD_GHACTION_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PROD_GHACTION_AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.DEV_GHACTION_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.DEV_GHACTION_AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
       - name: Copy Artifact to S3
         run:
-          aws s3 sync ./codedeploy_artifact s3://${{ env.PROD_CODEDEPLOY_BUCKET_NAME }}
+          aws s3 sync ./codedeploy_artifact s3://${{ secrets.CODE_DEPLOY_BUCKET_NAME}}
       - name: CodeDeploy API Call
         run: |
           echo "CodeDeploy"
@@ -63,7 +63,7 @@ jobs:
           --application-name ${{env.CODEDEPLOY_APPLICATION_NAME}} \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name ${{env.CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME}} \
-          --s3-location bucket=${{ env.PROD_CODEDEPLOY_BUCKET_NAME }},bundleType=zip,key=${{ env.ARTIFACT_NAME }} \
+          --s3-location bucket=${{ env.CODE_DEPLOY_BUCKET_NAME }},bundleType=zip,key=${{ env.ARTIFACT_NAME }} \
           --auto-rollback-configuration enabled=true,events=DEPLOYMENT_FAILURE,DEPLOYMENT_STOP_ON_ALARM,DEPLOYMENT_STOP_ON_REQUEST)
           echo "$deploymentId"
 

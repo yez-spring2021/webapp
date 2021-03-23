@@ -9,7 +9,7 @@ Email: ye.z@northeastern.edu
 ```
     Java 11
     SpringBoot & Hibernate ORM Framework
-    Maven.
+    Maven 
     MySQL 8.0
 ```
 ## Prerequisite
