@@ -33,7 +33,7 @@ public class BookController {
         return bookService.getBook(bookId);
     }
 
-    @GetMapping("/books")
+    @GetMapping("/mybooks")
     @ResponseBody
     public List<BookData> getBooks() {
         return bookService.getBooks();
