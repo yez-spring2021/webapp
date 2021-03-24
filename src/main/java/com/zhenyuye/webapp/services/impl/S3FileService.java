@@ -81,6 +81,7 @@ public class S3FileService {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         fileMetaDataRepository.save(fileMetaData);
+        stopWatch.stop();
         statsDClient.recordExecutionTime(FILE_METADATA_DB_QUERY_INSERT + TIMER_POSTFIX, stopWatch.getLastTaskTimeMillis());
     }
 
