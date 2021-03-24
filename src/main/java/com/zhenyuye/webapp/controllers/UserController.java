@@ -7,6 +7,7 @@ import com.zhenyuye.webapp.dtos.userDto.UserUpdateDTO;
 import com.zhenyuye.webapp.model.User;
 import com.zhenyuye.webapp.services.impl.UserService;
 import com.zhenyuye.webapp.utils.ValidationUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +18,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@Slf4j
 public class UserController {
     private static final String CREATE_USER_ENDPOINT = "v1.user.http.post";
     private static final String GET_USER_ENDPOINT = "v1.user.self.get";
     private static final String UPDATE_USER_ENDPOINT = "v1.user.self.put";
     private static final String COUNTER_POSTFIX = "_counter";
     private static final String TIMER_POSTFIX = "_timer";
+    private static final String LOG_PREFIX = "UserController";
+
     @Autowired
     private UserService userService;
 
@@ -31,9 +35,10 @@ public class UserController {
 
     @PostMapping(value = "/v1/user")
     public ResponseEntity<UserData> createUser(@Valid @RequestBody UserRegisterDTO userRegisterDTO, BindingResult result) {
+        log.info(LOG_PREFIX+".createUser");
+        statsDClient.incrementCounter(CREATE_USER_ENDPOINT + COUNTER_POSTFIX);
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        statsDClient.incrementCounter(CREATE_USER_ENDPOINT + COUNTER_POSTFIX);
         ValidationUtil.verifyInput(result);
         User user = userService.createUser(userRegisterDTO);
         UserData userData = buildUserData(user);
@@ -44,10 +49,10 @@ public class UserController {
 
     @GetMapping("/v1/user/self")
     public ResponseEntity<UserData> getUser(@RequestHeader("authorization") String auth) {
+        log.info(LOG_PREFIX+".getUser");
+        statsDClient.incrementCounter(GET_USER_ENDPOINT + COUNTER_POSTFIX);
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        ;
-        statsDClient.incrementCounter(GET_USER_ENDPOINT + COUNTER_POSTFIX);
         if (!auth.isEmpty()) {
             User user = userService.getUser(auth);
             UserData userData = buildUserData(user);
@@ -64,10 +69,10 @@ public class UserController {
 
     @PutMapping("/v1/user/self")
     public ResponseEntity<UserData> updateUser(@RequestHeader("authorization") String auth, @Valid @RequestBody UserUpdateDTO userUpdateDTO, BindingResult result) {
+        log.info(LOG_PREFIX+".updateUser");
+        statsDClient.incrementCounter(UPDATE_USER_ENDPOINT + COUNTER_POSTFIX);
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        ;
-        statsDClient.incrementCounter(UPDATE_USER_ENDPOINT + COUNTER_POSTFIX);
         ValidationUtil.verifyInput(result);
         if (!auth.isEmpty()) {
             User user = userService.updateUser(auth, userUpdateDTO);
