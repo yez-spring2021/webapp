@@ -4,7 +4,7 @@ os: linux
 files:
   - source: ./target/ROOT.war
     destination: /opt/tomcat/latest/webapps
-  - source: ./cloudwatch-fonfig.json
+  - source: ./cloudwatch-config.json
     destination: /opt
 
 hooks:
