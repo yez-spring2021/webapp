@@ -80,6 +80,11 @@
             <version>3.6.28</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.timgroup</groupId>
+            <artifactId>java-statsd-client</artifactId>
+            <version>3.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,10 +1,12 @@
 package com.zhenyuye.webapp.services;
 
+import com.timgroup.statsd.StatsDClient;
 import com.zhenyuye.webapp.dtos.userDto.UserCredential;
 import com.zhenyuye.webapp.model.User;
 import com.zhenyuye.webapp.repositories.UserRepository;
 import com.zhenyuye.webapp.services.impl.AuthService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -26,9 +28,16 @@ public class AuthServiceTest {
     @Mock
     private UserRepository userRepository;
     @Mock
+    private StatsDClient statsDClient;
+    @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @InjectMocks
     private AuthService authService;
+
+    @BeforeEach
+    public void setUp() {
+        doNothing().when(statsDClient).recordExecutionTime(anyString(), anyLong());
+    }
 
     @Test
     public void getUserByUsernameTest() {
