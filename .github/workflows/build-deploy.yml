@@ -40,7 +40,7 @@ jobs:
           pwd
           ls -al
           mkdir -p codedeploy_artifact
-          zip -r ${{ env.ARTIFACT_NAME }} ./target/*.war *.yml scripts/*.sh
+          zip -r ${{ env.ARTIFACT_NAME }} ./target/*.war *.yml scripts/*.sh *.json
           mv ${{ env.ARTIFACT_NAME}} codedeploy_artifact/
           cd codedeploy_artifact
           pwd

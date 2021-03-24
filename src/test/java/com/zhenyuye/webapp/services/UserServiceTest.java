@@ -1,5 +1,6 @@
 package com.zhenyuye.webapp.services;
 
+import com.timgroup.statsd.StatsDClient;
 import com.zhenyuye.webapp.dtos.userDto.UserCredential;
 import com.zhenyuye.webapp.dtos.userDto.UserRegisterDTO;
 import com.zhenyuye.webapp.dtos.userDto.UserUpdateDTO;
@@ -8,6 +9,7 @@ import com.zhenyuye.webapp.repositories.UserRepository;
 import com.zhenyuye.webapp.services.impl.AuthService;
 import com.zhenyuye.webapp.services.impl.UserService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -15,6 +17,9 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 @SpringBootTest
 public class UserServiceTest {
@@ -30,10 +35,15 @@ public class UserServiceTest {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Mock
     private AuthService authService;
-
+    @Mock
+    private StatsDClient statsDClient;
     @InjectMocks
     private UserService userService;
 
+    @BeforeEach
+    public void setUp() {
+        doNothing().when(statsDClient).recordExecutionTime(anyString(), anyLong());
+    }
     @Test
     public void createUserTest() {
         final UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder().username(TEST_USERNAME).password(TEST_PASSWORD).firstName(TEST_FIRSTNAME).lastName(TEST_LASTNAME).build();
