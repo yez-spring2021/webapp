@@ -51,7 +51,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.PROD_GHACTION_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PROD_GHACTION_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PROD_GHACTION_AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
       - name: Copy Artifact to S3
         run:
