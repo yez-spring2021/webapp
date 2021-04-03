@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,7 +74,7 @@ public class BookController {
     }
 
     @PostMapping("/books")
-    public ResponseEntity<BookData> createBook(@RequestHeader("authorization") String auth, @Valid @RequestBody BookDTO bookDTO, BindingResult result) {
+    public ResponseEntity<BookData> createBook(@RequestHeader("authorization") String auth, @Valid @RequestBody BookDTO bookDTO, BindingResult result) throws MalformedURLException {
         log.info(LOG_PREFIX+".createBook");
         statsDClient.incrementCounter(CREATE_BOOK_ENDPOINT + COUNTER_POSTFIX);
         verifyInput(result);

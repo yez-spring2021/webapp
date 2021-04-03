@@ -17,7 +17,7 @@ env:
   DEV_GHACTION_AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_GHACTION_AWS_SECRET_ACCESS_KEY }}
   PROD_CODEDEPLOY_BUCKET_NAME: codedeploy.prod.webapp.zhenyu.ye
   REALM: desktop
-
+  SNS_TOPIC = ${{ secrets.DEV_SNS_TOPIC }}
 on:
   push:
     branches:
