@@ -11,6 +11,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   CODE_DEPLOY_BUCKET_NAME: ${{ secrets.CODE_DEPLOY_BUCKET_NAME }}
+  SNS_TOPIC: ${{ secrets.DEV_SNS_TOPIC }}
   REALM: desktop
 on:
   pull_request:
