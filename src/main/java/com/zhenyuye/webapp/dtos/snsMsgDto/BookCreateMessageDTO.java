@@ -10,5 +10,5 @@ public class BookCreateMessageDTO {
     private String bookName;
     private String email;
     private String link;
-    private String type = "DELETE";
+    private String type;
 }

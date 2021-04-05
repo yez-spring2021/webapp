@@ -70,6 +70,7 @@ public class BookServiceImpl implements BookService {
                 .bookName(book.getTitle())
                 .email(user.getEmail())
                 .link(url.toString())
+                .type("CREATE")
                 .build();
         awssnsService.publishMsgToTopic(JSON.toJSONString(message));
         return generateBookData(book);
@@ -125,6 +126,7 @@ public class BookServiceImpl implements BookService {
                 .bookName(book.getTitle())
                 .bookId(bookId.toString())
                 .email(user.getEmail())
+                .type("DELETE")
                 .build();
         awssnsService.publishMsgToTopic(JSON.toJSONString(message));
         statsDClient.recordExecutionTime(DB_BOOKS_QUERY_DELETE + TIMER_POSTFIX, stopWatch.getLastTaskTimeMillis());
