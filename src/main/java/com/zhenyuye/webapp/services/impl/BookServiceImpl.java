@@ -1,9 +1,12 @@
 package com.zhenyuye.webapp.services.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.timgroup.statsd.StatsDClient;
 import com.zhenyuye.webapp.dtos.bookDto.BookDTO;
 import com.zhenyuye.webapp.dtos.bookDto.BookData;
 import com.zhenyuye.webapp.dtos.bookDto.FileData;
+import com.zhenyuye.webapp.dtos.snsMsgDto.BookCreateMessageDTO;
+import com.zhenyuye.webapp.dtos.snsMsgDto.BookDeleteMessageDTO;
 import com.zhenyuye.webapp.exceptions.ValidationException;
 import com.zhenyuye.webapp.model.Book;
 import com.zhenyuye.webapp.model.User;
@@ -11,11 +14,15 @@ import com.zhenyuye.webapp.repositories.BookRepository;
 import com.zhenyuye.webapp.services.BookService;
 import com.zhenyuye.webapp.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -36,9 +43,14 @@ public class BookServiceImpl implements BookService {
     private StatsDClient statsDClient;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private AWSSNSService awssnsService;
+
+    @Value("${domain.name}")
+    private String domainName;
 
     @Override
-    public BookData createBook(BookDTO bookDTO, String auth) {
+    public BookData createBook(BookDTO bookDTO, String auth) throws MalformedURLException {
         User user = userService.getUser(auth);
         if (user == null) {
             throw new ValidationException("Cannot validate current user");
@@ -51,6 +63,16 @@ public class BookServiceImpl implements BookService {
                 .isbn(bookDTO.getIsbn())
                 .build();
         book = createBook(book);
+        String bookId = book.getId().toString();
+        URL url = UriComponentsBuilder.fromHttpUrl(String.join("/", domainName, "books", bookId)).build().toUri().toURL();
+        BookCreateMessageDTO message = BookCreateMessageDTO.builder()
+                .bookId(bookId)
+                .bookName(book.getTitle())
+                .email(user.getEmail())
+                .link(url.toString())
+                .type("CREATE")
+                .build();
+        awssnsService.publishMsgToTopic(JSON.toJSONString(message));
         return generateBookData(book);
     }
 
@@ -100,6 +122,13 @@ public class BookServiceImpl implements BookService {
         stopWatch.start();
         bookRepository.delete(book);
         stopWatch.stop();
+        BookDeleteMessageDTO message = BookDeleteMessageDTO.builder()
+                .bookName(book.getTitle())
+                .bookId(bookId.toString())
+                .email(user.getEmail())
+                .type("DELETE")
+                .build();
+        awssnsService.publishMsgToTopic(JSON.toJSONString(message));
         statsDClient.recordExecutionTime(DB_BOOKS_QUERY_DELETE + TIMER_POSTFIX, stopWatch.getLastTaskTimeMillis());
     }
 
