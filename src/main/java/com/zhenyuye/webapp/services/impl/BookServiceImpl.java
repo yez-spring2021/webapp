@@ -64,12 +64,12 @@ public class BookServiceImpl implements BookService {
                 .build();
         book = createBook(book);
         String bookId = book.getId().toString();
-        URL url = UriComponentsBuilder.fromHttpUrl(String.join("/", domainName, "books", bookId)).build().toUri().toURL();
+        final String subPath = String.join("/", "books", bookId);
         BookCreateMessageDTO message = BookCreateMessageDTO.builder()
                 .bookId(bookId)
                 .bookName(book.getTitle())
                 .email(user.getEmail())
-                .link(url.toString())
+                .link(subPath)
                 .type("CREATE")
                 .build();
         awssnsService.publishMsgToTopic(JSON.toJSONString(message));
