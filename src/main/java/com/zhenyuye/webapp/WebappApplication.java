@@ -12,10 +12,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class WebappApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        System.out.println(System.getenv("javax.net.ssl.trustStore"));
-        System.out.println(System.getenv("javax.net.ssl.trustStorePassword"));
-//        System.setProperty("javax.net.ssl.trustStore", "/home/mike/clientkeystore.jks");
-//        System.setProperty("javax.net.ssl.trustStorePassword", "yzy123poi99");
+        System.setProperty("javax.net.ssl.trustStore", System.getenv("trustStore"));
+        System.setProperty("javax.net.ssl.trustStorePassword", System.getenv("trustStorePassword"));
+        System.out.println(System.getProperty("javax.net.ssl.trustStore"));
+        System.out.println(System.getProperty("javax.net.ssl.trustStorePassword"));
         SpringApplication.run(WebappApplication.class, args);
     }
 
