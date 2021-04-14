@@ -12,10 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class WebappApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        System.setProperty("javax.net.ssl.trustStore", System.getenv("TRUST_STORE"));
-        System.setProperty("javax.net.ssl.trustStorePassword", System.getenv("TRUST_STORE_PASSWORD"));
-        System.out.println(System.getProperty("javax.net.ssl.trustStore"));
-        System.out.println(System.getProperty("javax.net.ssl.trustStorePassword"));
         SpringApplication.run(WebappApplication.class, args);
     }
 
@@ -23,8 +19,6 @@ public class WebappApplication extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         System.setProperty("javax.net.ssl.trustStore", System.getenv("TRUST_STORE"));
         System.setProperty("javax.net.ssl.trustStorePassword", System.getenv("TRUST_STORE_PASSWORD"));
-        System.out.println(System.getProperty("javax.net.ssl.trustStore"));
-        System.out.println(System.getProperty("javax.net.ssl.trustStorePassword"));
         return builder.sources(WebappApplication.class);
     }
 }
